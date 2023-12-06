@@ -122,6 +122,7 @@ class RecipeListResource(Resource) :
 
 class RecipeResource(Resource) :
 
+
     #  Path (경로)에 숫자나 문자가 바뀌면서 처리되는 경우에는
     #  해당 변수를, 파라미터에 꼭 써줘야 한다.
     #  이 변수는, app.py 파일의 addResource 함수에서 사용한 변수다!
@@ -259,3 +260,63 @@ class RecipeResource(Resource) :
             return {"result" : "fail", "error" : str(e)}, 500
 
         return {"result" : "success"}, 200
+    
+class RecipePublishResource(Resource) :
+
+    def put(self, recipe_id) :
+
+        try :
+            
+            connection = get_connection()
+
+            query = '''update recipe 
+                        set is_publish = 1
+                        where id = %s;'''
+            
+            record = (recipe_id , )
+
+            cursor = connection.cursor()
+            cursor.execute(query, record)
+
+            connection.commit()
+            cursor.close()
+            connection.close()
+
+        except Error as e:
+            print(e)
+            cursor.close()
+            connection.close()
+            return {'result':'fail', 
+                    'error' : str(e)} , 500
+
+        return {'result' : 'success'}, 200
+    
+
+
+
+    def delete(self, recipe_id) :
+        try :
+            
+            connection = get_connection()
+
+            query = '''update recipe 
+                        set is_publish = 0
+                        where id = %s;'''
+            
+            record = (recipe_id , )
+
+            cursor = connection.cursor()
+            cursor.execute(query, record)
+
+            connection.commit()
+            cursor.close()
+            connection.close()
+
+        except Error as e:
+            print(e)
+            cursor.close()
+            connection.close()
+            return {'result':'fail', 
+                    'error' : str(e)} , 500
+
+        return {'result' : 'success'}, 200
