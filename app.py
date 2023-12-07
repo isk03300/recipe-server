@@ -40,5 +40,5 @@ api.add_resource(UserLoginResource ,'/user/login' )
 api.add_resource(userLogoutResource , '/user/logout')
 
 
-if __name__ == '__main__' :
+if __name__ == '__main__' :  
     app.run()
